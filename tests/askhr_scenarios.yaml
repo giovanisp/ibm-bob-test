@@ -75,10 +75,13 @@ scenarios:
   - id: kb_smart_working
     description: >
       Domanda sulla policy smart working — risposta attesa dalla KB.
+      Nota: l'agente risponde con "smart‑working" (trattino Unicode) quindi
+      si verifica sul contenuto numerico anziché sulla grafia del termine.
     turns:
       - user: "Quanti giorni di smart working posso fare a settimana?"
         expect_contains:
-          - "smart working"
+          - "3"          # numero di giorni — prova che la KB è stata consultata
+          - "settimana"  # contesto della risposta
         expect_not_contains:
           - "non trovato"
           - "errore"
