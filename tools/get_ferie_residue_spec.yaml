@@ -1,0 +1,71 @@
+# Spec contratto per il tool get_ferie_residue
+# Ogni caso definisce input atteso e asserzioni sull'output (stringa).
+# Usato da tests/run_tests.py per validare il tool in isolamento.
+
+tool: get_ferie_residue
+description: >
+  Restituisce il saldo ferie e ROL di un dipendente Acme Corp.
+  Il tool riceve un employee_id e risponde con una stringa formattata.
+
+cases:
+  - id: dipendente_trovato_mario
+    description: Dipendente esistente — mario.rossi
+    input:
+      employee_id: "mario.rossi"
+    expect_contains:
+      - "Mario Rossi"
+      - "19 giorni"
+      - "24 ore"
+    expect_not_contains:
+      - "non trovato"
+      - "non fornito"
+
+  - id: dipendente_trovato_anna
+    description: Dipendente esistente — anna.bianchi
+    input:
+      employee_id: "anna.bianchi"
+    expect_contains:
+      - "Anna Bianchi"
+      - "8 giorni"
+      - "8 ore"
+    expect_not_contains:
+      - "non trovato"
+      - "non fornito"
+
+  - id: dipendente_non_trovato
+    description: ID dipendente non presente nel sistema HR
+    input:
+      employee_id: "xxx.yyy"
+    expect_contains:
+      - "non trovato"
+    expect_not_contains:
+      - "giorni"
+      - "ore"
+
+  - id: input_vuoto
+    description: employee_id stringa vuota
+    input:
+      employee_id: ""
+    expect_contains:
+      - "non fornito"
+    expect_not_contains:
+      - "giorni"
+
+  - id: input_spazi
+    description: employee_id fatto solo di spazi
+    input:
+      employee_id: "   "
+    expect_contains:
+      - "non fornito"
+    expect_not_contains:
+      - "giorni"
+
+  - id: case_insensitive
+    description: ID in maiuscolo — deve funzionare come il minuscolo
+    input:
+      employee_id: "MARIO.ROSSI"
+    expect_contains:
+      - "Mario Rossi"
+      - "19 giorni"
+    expect_not_contains:
+      - "non trovato"

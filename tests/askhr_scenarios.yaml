@@ -1,0 +1,121 @@
+# Scenari conversazionali per MioAgente (AskHR)
+# Ogni scenario è una sequenza di turni user/agent.
+# Usato da tests/run_tests.py per validare il comportamento dell'agente live su wxO.
+#
+# Campi per ogni turn:
+#   user          - messaggio inviato all'agente
+#   expect_contains     - lista di stringhe che DEVONO comparire nella risposta (case-insensitive)
+#   expect_not_contains - lista di stringhe che NON devono comparire nella risposta
+
+agent: MioAgente
+
+scenarios:
+
+  # ---------------------------------------------------------------------------
+  # Tool: get_ferie_residue
+  # ---------------------------------------------------------------------------
+
+  - id: ferie_con_id_diretto
+    description: >
+      L'utente fornisce subito il proprio ID — l'agente deve chiamare il tool
+      e restituire il saldo senza chiedere l'ID.
+    turns:
+      - user: "Quante ferie mi restano? Sono mario.rossi"
+        expect_contains:
+          - "19"
+          - "ferie"
+        expect_not_contains:
+          - "ID dipendente"
+          - "errore"
+
+  - id: ferie_senza_id_poi_fornito
+    description: >
+      L'utente non fornisce l'ID al primo turno — l'agente deve chiederlo,
+      poi usarlo al secondo turno per chiamare il tool.
+    turns:
+      - user: "Quante ferie ho ancora quest'anno?"
+        expect_contains:
+          - "ID dipendente"
+        expect_not_contains:
+          - "19"
+      - user: "mario.rossi"
+        expect_contains:
+          - "19"
+          - "ferie"
+        expect_not_contains:
+          - "errore"
+
+  - id: ferie_id_non_trovato
+    description: >
+      L'utente fornisce un ID inesistente — l'agente deve comunicare
+      che il dipendente non è stato trovato.
+    turns:
+      - user: "Quante ferie ha xxx.yyy?"
+        expect_contains:
+          - "trovato"
+        expect_not_contains:
+          - "19 giorni"
+          - "24 ore"
+
+  - id: rol_residui
+    description: >
+      L'utente chiede i ROL residui — l'agente deve mostrare anche le ore ROL.
+    turns:
+      - user: "Quante ore di ROL mi restano? Sono anna.bianchi"
+        expect_contains:
+          - "ROL"
+          - "8"
+        expect_not_contains:
+          - "errore"
+
+  # ---------------------------------------------------------------------------
+  # Knowledge Base: employee_handbook + ferie_policy
+  # ---------------------------------------------------------------------------
+
+  - id: kb_smart_working
+    description: >
+      Domanda sulla policy smart working — risposta attesa dalla KB.
+    turns:
+      - user: "Quanti giorni di smart working posso fare a settimana?"
+        expect_contains:
+          - "smart working"
+        expect_not_contains:
+          - "non trovato"
+          - "errore"
+
+  - id: kb_ferie_policy
+    description: >
+      Domanda generica sulle ferie — risposta dalla KB senza invocare il tool.
+    turns:
+      - user: "Come funziona il riporto delle ferie all'anno successivo?"
+        expect_contains:
+          - "ferie"
+          - "riporto"
+        expect_not_contains:
+          - "errore"
+
+  - id: kb_congedo_matrimoniale
+    description: >
+      Domanda su un benefit specifico — risposta attesa dalla KB.
+    turns:
+      - user: "Quanti giorni ho per il congedo matrimoniale?"
+        expect_contains:
+          - "congedo"
+        expect_not_contains:
+          - "errore"
+
+  # ---------------------------------------------------------------------------
+  # Casi limite
+  # ---------------------------------------------------------------------------
+
+  - id: fuori_scope
+    description: >
+      Domanda completamente fuori scope HR — l'agente deve indicare
+      che non ha informazioni e non inventare.
+    turns:
+      - user: "Qual è il prezzo delle azioni di Acme Corp oggi?"
+        expect_not_contains:
+          - "€"
+          - "dollari"
+        expect_contains:
+          - []   # nessun vincolo positivo — basta che non inventi dati finanziari

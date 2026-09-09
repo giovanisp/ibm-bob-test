@@ -1,0 +1,89 @@
+{
+  "expense_reports": [
+    {
+      "report_id": "EXP-2024-0891",
+      "submitted_by": "Marco Bianchi",
+      "employee_email": "m.bianchi@acme.com",
+      "department": "Sales",
+      "manager": "Francesca Neri",
+      "manager_email": "f.neri@acme.com",
+      "submission_date": "2024-11-05",
+      "trip_purpose": "Visita cliente TechSolution SpA — Milano",
+      "trip_dates": {"from": "2024-10-28", "to": "2024-10-29"},
+      "total_amount": 387.50,
+      "status": "Approvata",
+      "items": [
+        {"date": "2024-10-28", "category": "Trasporto", "description": "Treno Roma-Milano A/R", "amount": 142.00, "receipt": true, "policy_ok": true},
+        {"date": "2024-10-28", "category": "Alloggio", "description": "Hotel Manzoni Milano 1 notte", "amount": 165.00, "receipt": true, "policy_ok": true},
+        {"date": "2024-10-28", "category": "Pasto", "description": "Cena con cliente (2 persone)", "amount": 80.50, "receipt": true, "policy_ok": true},
+        {"date": "2024-10-29", "category": "Trasporto", "description": "Taxi aeroporto-hotel", "amount": 0.00, "receipt": false, "policy_ok": false, "note": "Spesa già inclusa nel totale treno; riga rimossa"},
+        {"date": "2024-10-29", "category": "Pasto", "description": "Pranzo di lavoro solo", "amount": 0.00, "receipt": true, "policy_ok": true}
+      ],
+      "finance_notes": "Approvata. Rimborso in busta paga dicembre 2024."
+    },
+    {
+      "report_id": "EXP-2024-0892",
+      "submitted_by": "Giulia Ferretti",
+      "employee_email": "g.ferretti@acme.com",
+      "department": "HR",
+      "manager": "Paolo Esposito",
+      "manager_email": "p.esposito@acme.com",
+      "submission_date": "2024-11-08",
+      "trip_purpose": "Conferenza HRTech Europe — Berlino",
+      "trip_dates": {"from": "2024-10-22", "to": "2024-10-24"},
+      "total_amount": 1245.00,
+      "status": "In Revisione",
+      "items": [
+        {"date": "2024-10-22", "category": "Trasporto", "description": "Volo Roma-Berlino A/R", "amount": 420.00, "receipt": true, "policy_ok": true},
+        {"date": "2024-10-22", "category": "Alloggio", "description": "Hotel Ibis Berlin Mitte — 2 notti", "amount": 380.00, "receipt": true, "policy_ok": true},
+        {"date": "2024-10-22", "category": "Pasto", "description": "Cena con colleghi (4 persone)", "amount": 245.00, "receipt": true, "policy_ok": false, "note": "ATTENZIONE: supera massimale €80/persona (€61,25/persona ok). Totale €245 per 4 persone = entro policy."},
+        {"date": "2024-10-23", "category": "Pasto", "description": "Pranzo di lavoro solo", "amount": 22.00, "receipt": true, "policy_ok": false, "note": "ATTENZIONE: supera massimale pranzo solo (€18). Eccedenza: €4."},
+        {"date": "2024-10-23", "category": "Altro", "description": "Minibar hotel", "amount": 18.00, "receipt": true, "policy_ok": false, "note": "NON RIMBORSABILE: minibar personale non ammesso da policy."},
+        {"date": "2024-10-24", "category": "Trasporto", "description": "Taxi hotel-aeroporto", "amount": 35.00, "receipt": false, "policy_ok": false, "note": "Ricevuta mancante. Importo > €10 richiede ricevuta."},
+        {"date": "2024-10-24", "category": "Pasto", "description": "Colazione in aeroporto", "amount": 12.50, "receipt": true, "policy_ok": true, "note": "In trasferta, rimborsabile €10 max; eccedenza €2.50."},
+        {"date": "2024-10-22", "category": "Iscrizione", "description": "Quota iscrizione HRTech Europe", "amount": 112.50, "receipt": true, "policy_ok": true}
+      ],
+      "finance_notes": "In revisione: 3 voci non conformi alla policy. Attesa risposta dipendente per rettifica."
+    },
+    {
+      "report_id": "EXP-2024-0893",
+      "submitted_by": "Luca Ricci",
+      "employee_email": "l.ricci@acme.com",
+      "department": "Finance",
+      "manager": "Chiara Moretti",
+      "manager_email": "c.moretti@acme.com",
+      "submission_date": "2024-11-10",
+      "trip_purpose": "Audit interno sede di Napoli",
+      "trip_dates": {"from": "2024-11-04", "to": "2024-11-06"},
+      "total_amount": 512.80,
+      "status": "Approvata parzialmente",
+      "items": [
+        {"date": "2024-11-04", "category": "Trasporto", "description": "Treno Roma-Napoli A/R", "amount": 88.00, "receipt": true, "policy_ok": true},
+        {"date": "2024-11-04", "category": "Alloggio", "description": "Hotel Romeo Napoli — 2 notti", "amount": 340.00, "receipt": true, "policy_ok": false, "note": "ATTENZIONE: €170/notte supera massimale €130/notte per città non-prime. Eccedenza: €80 non rimborsabile."},
+        {"date": "2024-11-04", "category": "Pasto", "description": "Cena solo", "amount": 24.80, "receipt": true, "policy_ok": false, "note": "Supera massimale cena solo (€25). ATTENZIONE: importo esattamente al limite; approvato per arrotondamento."},
+        {"date": "2024-11-05", "category": "Trasporto", "description": "Autonoleggio 2 giorni", "amount": 60.00, "receipt": true, "policy_ok": true}
+      ],
+      "finance_notes": "Approvato con decurtazione €80 per eccedenza alberghiera. Rimborso netto: €432.80."
+    },
+    {
+      "report_id": "EXP-2024-0894",
+      "submitted_by": "Sara Conti",
+      "employee_email": "s.conti@acme.com",
+      "department": "Sales",
+      "manager": "Francesca Neri",
+      "manager_email": "f.neri@acme.com",
+      "submission_date": "2024-11-12",
+      "trip_purpose": "Formazione Salesforce CRM — Roma (sede)",
+      "trip_dates": {"from": "2024-11-07", "to": "2024-11-07"},
+      "total_amount": 95.00,
+      "status": "Rifiutata",
+      "items": [
+        {"date": "2024-11-07", "category": "Trasporto", "description": "Taxi casa-ufficio (corsa normale pendolare)", "amount": 25.00, "receipt": true, "policy_ok": false, "note": "NON RIMBORSABILE: tragitto casa-ufficio escluso da policy."},
+        {"date": "2024-11-07", "category": "Pasto", "description": "Pranzo in sede con formatore", "amount": 40.00, "receipt": true, "policy_ok": false, "note": "Pranzo con singolo fornitore esterno: applicabile massimale €50/persona. MA: formazione in sede = nessun rimborso pasto."},
+        {"date": "2024-11-07", "category": "Cancelleria", "description": "Blocco note e pennarelli per workshop", "amount": 22.00, "receipt": true, "policy_ok": false, "note": "Spese di cancelleria per eventi in sede a carico dell'ufficio, non del dipendente."},
+        {"date": "2024-11-07", "category": "Altro", "description": "Abbigliamento formale per il corso", "amount": 8.00, "receipt": true, "policy_ok": false, "note": "NON RIMBORSABILE: abbigliamento personale sempre escluso."}
+      ],
+      "finance_notes": "Nota spese rifiutata: nessuna voce è rimborsabile secondo policy (formazione in sede). Informare il dipendente."
+    }
+  ]
+}
