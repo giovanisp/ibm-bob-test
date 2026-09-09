@@ -16,6 +16,7 @@ jobs:
 
     env:
       WXO_API_KEY: ${{ secrets.WXO_API_KEY }}
+      WXO_ENV_URL: ${{ secrets.WXO_ENV_URL }}
 
     steps:
       - uses: actions/checkout@v4
@@ -27,7 +28,11 @@ jobs:
       - name: Install ADK and dependencies
         run: pip install ibm-watsonx-orchestrate pyyaml
 
-      - name: Activate wxO environment
+      # Fresh GHA runners have no orchestrate config — register the env first
+      - name: Register wxO environment
+        run: orchestrate env add -n GSIBM -u "$WXO_ENV_URL" --type ibm_iam
+
+      - name: Activate wxO environment (fetch token)
         run: orchestrate env activate GSIBM -a "$WXO_API_KEY"
 
       - name: Run full test suite

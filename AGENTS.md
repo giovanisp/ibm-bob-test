@@ -142,12 +142,16 @@ Three-level GitHub Actions pipeline under `.github/workflows/`. All jobs run fro
 
 L2 and L3 agent tests need a wxO API key. Set it once per repo:
 
-1. Go to your GitHub repo → **Settings** → **Secrets and variables** → **Actions**
-2. Click **New repository secret**
-3. Name: `WXO_API_KEY` — Value: your IBM watsonx Orchestrate API key
+Add **two** repository secrets (Settings → Secrets and variables → Actions → New repository secret):
 
-The secret is encrypted by GitHub, never printed in logs, and injected as `${{ secrets.WXO_API_KEY }}`.  
+| Secret name | Value |
+|---|---|
+| `WXO_API_KEY` | Your IBM watsonx Orchestrate API key |
+| `WXO_ENV_URL` | Your wxO instance URL (e.g. `https://api.ca-tor.watson-orchestrate.cloud.ibm.com/instances/<id>`) |
+
+Both are encrypted by GitHub and never printed in logs.
 The wxO environment name is hardcoded as `GSIBM` in the workflow files.
+GHA runners are blank VMs — `env add` registers the environment on startup, then `env activate` fetches the token.
 
 ### Security reports
 
