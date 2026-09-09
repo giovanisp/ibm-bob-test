@@ -159,3 +159,5 @@ L3 uploads two JSON artifacts after each run (visible under the workflow run's *
 - `bandit-report.json` — SAST findings (HIGH/CRITICAL)
 - `pip-audit-report.json` — dependency CVE findings
 
+
+<!-- ci: trigger L2 workflow check -->
