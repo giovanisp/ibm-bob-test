@@ -1,0 +1,30 @@
+name: L1 · Lint & Format
+
+on:
+  push:
+    branches: ["**"]
+
+defaults:
+  run:
+    working-directory: my-lab-project
+
+jobs:
+  lint:
+    name: Ruff lint + format check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Ruff
+        run: pip install ruff
+
+      - name: Lint (ruff check)
+        run: ruff check .
+
+      - name: Format check (ruff format)
+        run: ruff format --check .

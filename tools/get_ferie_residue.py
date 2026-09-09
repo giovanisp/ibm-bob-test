@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from datetime import date
-from typing import Optional
 
 from ibm_watsonx_orchestrate.agent_builder.tools import tool
 
