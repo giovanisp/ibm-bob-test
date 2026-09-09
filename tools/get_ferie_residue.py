@@ -79,17 +79,14 @@ def get_ferie_residue(employee_id: str) -> str:
             "Verificare l'ID e riprovare oppure contattare hr@acme.com."
         )
 
-    ferie_residue = (
-        data["ferie_totali"]
-        - data["ferie_godute"]
-        + data["ferie_riportate_anno_prec"]
-    )
+    ferie_residue = data["ferie_totali"] - data["ferie_godute"] + data["ferie_riportate_anno_prec"]
     rol_residue = data["rol_totali_ore"] - data["rol_godute_ore"]
 
     return (
         f"Dipendente: {data['nome']} ({employee_id})\n"
         f"Anno: {data['anno']}\n"
         f"Ferie residue: {ferie_residue} giorni "
-        f"(godute: {data['ferie_godute']}, riportate anno prec.: {data['ferie_riportate_anno_prec']})\n"
+        f"(godute: {data['ferie_godute']}, "
+        f"riportate anno prec.: {data['ferie_riportate_anno_prec']})\n"
         f"ROL residui: {rol_residue} ore (godute: {data['rol_godute_ore']})"
     )

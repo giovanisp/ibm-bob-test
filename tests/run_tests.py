@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Any
 
 import yaml
 
@@ -29,7 +28,7 @@ if hasattr(sys.stdout, "reconfigure"):
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-ROOT = Path(__file__).parent.parent          # my-lab-project/
+ROOT = Path(__file__).parent.parent  # my-lab-project/
 TOOL_SPEC = ROOT / "tools" / "get_ferie_residue_spec.yaml"
 AGENT_SPEC = Path(__file__).parent / "askhr_scenarios.yaml"
 
@@ -58,6 +57,7 @@ def _skip(msg: str) -> str:
 # ---------------------------------------------------------------------------
 # Tool suite — importa il modulo e chiama la funzione direttamente
 # ---------------------------------------------------------------------------
+
 
 def run_tool_suite(spec_path: Path) -> tuple[int, int]:
     """Esegue tutti i casi della spec del tool. Ritorna (passed, total)."""
@@ -115,16 +115,17 @@ def run_tool_suite(spec_path: Path) -> tuple[int, int]:
 # Agent suite — chiama `orchestrate chat ask` per ogni turn
 # ---------------------------------------------------------------------------
 
+
 def _chat(agent: str, message: str, thread_id: str | None = None) -> tuple[str, str]:
     """
     Chiama l'agente wxO via SDK Python e ritorna (risposta, thread_id).
     Usa la stessa logica di chat_controller._execute_agent_interaction_websocket.
     """
     try:
+        from ibm_watsonx_orchestrate.cli.commands.agents.agents_helper import get_agent_id_by_name
         from ibm_watsonx_orchestrate.client.chat.run_client import RunClient
         from ibm_watsonx_orchestrate.client.threads.threads_client import ThreadsClient
         from ibm_watsonx_orchestrate.client.utils import instantiate_client
-        from ibm_watsonx_orchestrate.cli.commands.agents.agents_helper import get_agent_id_by_name
     except ImportError as exc:
         return f"[ImportError: {exc}]", ""
 
@@ -220,7 +221,7 @@ def run_agent_suite(spec_path: Path) -> tuple[int, int]:
                     failures.append(f"presente inatteso '{token}'")
 
             if failures:
-                print(_fail(f"[{sid}] turno {i+1}: {', '.join(failures)}"))
+                print(_fail(f"[{sid}] turno {i + 1}: {', '.join(failures)}"))
                 print(f"       user:     {user_msg!r}")
                 safe_resp = response[:300].encode("utf-8", errors="replace").decode("utf-8")
                 print(f"       response: {safe_resp!r}")
@@ -237,6 +238,7 @@ def run_agent_suite(spec_path: Path) -> tuple[int, int]:
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
+
 
 def _summary(label: str, passed: int, total: int) -> None:
     colour = GREEN if passed == total else RED
