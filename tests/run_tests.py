@@ -22,6 +22,10 @@ from typing import Any
 
 import yaml
 
+# Forza stdout UTF-8 su Windows (evita UnicodeEncodeError con emoji e accenti)
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
@@ -210,7 +214,8 @@ def run_agent_suite(spec_path: Path) -> tuple[int, int]:
             if failures:
                 print(_fail(f"[{sid}] turno {i+1}: {', '.join(failures)}"))
                 print(f"       user:     {user_msg!r}")
-                print(f"       response: {response[:300]!r}")
+                safe_resp = response[:300].encode("utf-8", errors="replace").decode("utf-8")
+                print(f"       response: {safe_resp!r}")
                 scenario_ok = False
                 break
 

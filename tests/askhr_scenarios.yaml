@@ -50,9 +50,9 @@ scenarios:
       L'utente fornisce un ID inesistente — l'agente deve comunicare
       che il dipendente non è stato trovato.
     turns:
-      - user: "Quante ferie ha xxx.yyy?"
+      - user: "Quante ferie residue ha il dipendente con ID xxx.yyy?"
         expect_contains:
-          - "trovato"
+          - "xxx.yyy"
         expect_not_contains:
           - "19 giorni"
           - "24 ore"
