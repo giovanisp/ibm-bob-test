@@ -4,10 +4,6 @@ on:
   push:
     branches: ["**"]
 
-defaults:
-  run:
-    working-directory: my-lab-project
-
 jobs:
   lint:
     name: Ruff lint + format check
