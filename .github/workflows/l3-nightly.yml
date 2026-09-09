@@ -47,6 +47,7 @@ jobs:
 
       - name: Install security tools and runtime deps
         run: |
+          pip install --upgrade "setuptools>=83.0.0"
           pip install ibm-watsonx-orchestrate pyyaml
           pip install bandit[toml] pip-audit
 
