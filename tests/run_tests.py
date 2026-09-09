@@ -37,14 +37,22 @@ AGENT_SPEC = Path(__file__).parent / "askhr_scenarios.yaml"
 # ANSI colours
 # ---------------------------------------------------------------------------
 GREEN = "\033[92m"
-RED   = "\033[91m"
+RED = "\033[91m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
-BOLD  = "\033[1m"
+BOLD = "\033[1m"
 
-def _pass(msg: str) -> str:  return f"{GREEN}PASS{RESET} {msg}"
-def _fail(msg: str) -> str:  return f"{RED}FAIL{RESET} {msg}"
-def _skip(msg: str) -> str:  return f"{YELLOW}SKIP{RESET} {msg}"
+
+def _pass(msg: str) -> str:
+    return f"{GREEN}PASS{RESET} {msg}"
+
+
+def _fail(msg: str) -> str:
+    return f"{RED}FAIL{RESET} {msg}"
+
+
+def _skip(msg: str) -> str:
+    return f"{YELLOW}SKIP{RESET} {msg}"
 
 
 # ---------------------------------------------------------------------------
@@ -73,7 +81,7 @@ def run_tool_suite(spec_path: Path) -> tuple[int, int]:
         cid: str = case["id"]
         inputs: dict = case.get("input", {})
         must_have: list[str] = case.get("expect_contains", [])
-        must_not:  list[str] = case.get("expect_not_contains", [])
+        must_not: list[str] = case.get("expect_not_contains", [])
 
         try:
             raw = fn(**inputs)
@@ -136,7 +144,7 @@ def _chat(agent: str, message: str, thread_id: str | None = None) -> tuple[str, 
             thread_id=thread_id,
         )
         thread_id = run_response["thread_id"]
-        run_id    = run_response["run_id"]
+        run_id = run_response["run_id"]
 
         # Attendi completamento run
         run_client.wait_for_run_completion(run_id)
@@ -191,7 +199,7 @@ def run_agent_suite(spec_path: Path) -> tuple[int, int]:
         for i, turn in enumerate(turns):
             user_msg: str = turn["user"]
             must_have: list = turn.get("expect_contains", [])
-            must_not:  list[str] = turn.get("expect_not_contains", [])
+            must_not: list[str] = turn.get("expect_not_contains", [])
 
             # Salta se expect_contains è lista vuota (nessun vincolo positivo)
             if must_have == [[]]:
@@ -256,7 +264,7 @@ def main() -> None:
 
     # Exit code non-zero se almeno un test fallisce
     total_passed = tool_passed + agent_passed
-    total_all    = tool_total  + agent_total
+    total_all = tool_total + agent_total
     sys.exit(0 if total_passed == total_all else 1)
 
 

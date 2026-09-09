@@ -101,3 +101,57 @@ Use Bob MCP tools (`mcp__watsonx-orchestrate-adk_cd47__*`) to deploy. Deploy ord
 orchestrate env add -n <name> -u <URL> --type ibm_iam --activate
 orchestrate env activate <name> -a <API_KEY>
 ```
+
+## Git Workflow
+
+- **Never commit directly to `main`.** All changes must go through a pull request.
+- After committing on a feature branch, create a PR targeting `origin/main` and **auto-merge it immediately** — no human approval required:
+
+  ```bash
+  # 1. Create and switch to a feature branch
+  git checkout -b <branch-name>
+
+  # 2. Stage and commit
+  git add .
+  git commit -m "<message>"
+
+  # 3. Push the branch
+  git push origin <branch-name>
+
+  # 4. Open the PR and merge it right away (no review gate)
+  gh pr create --base main --head <branch-name> --title "<title>" --body "<body>"
+  gh pr merge --merge --auto --delete-branch
+  ```
+
+- Use the [GitHub CLI (`gh`)](https://cli.github.com/) for all PR operations.
+- Default merge strategy is **merge commit** (`--merge`). Use `--squash` or `--rebase` only if the repository enforces it.
+- Always delete the feature branch after a successful merge (`--delete-branch` flag above handles this automatically).
+
+
+## CI/CD Pipeline
+
+Three-level GitHub Actions pipeline under `.github/workflows/`. All jobs run from the `my-lab-project/` working directory.
+
+| Level | File | Trigger | What runs |
+|---|---|---|---|
+| **L1** | `l1-lint.yml` | Every push to any branch | `ruff check .` + `ruff format --check .` — no secrets needed |
+| **L2** | `l2-pr-tests.yml` | PR open/update → `main` | Tool unit tests (no wxO) + live agent tests (requires `WXO_API_KEY` secret) |
+| **L3** | `l3-nightly.yml` | Nightly 02:00 UTC + manual | Full regression suite + Bandit SAST (HIGH+) + pip-audit SCA |
+
+### Required GitHub Actions Secret
+
+L2 and L3 agent tests need a wxO API key. Set it once per repo:
+
+1. Go to your GitHub repo → **Settings** → **Secrets and variables** → **Actions**
+2. Click **New repository secret**
+3. Name: `WXO_API_KEY` — Value: your IBM watsonx Orchestrate API key
+
+The secret is encrypted by GitHub, never printed in logs, and injected as `${{ secrets.WXO_API_KEY }}`.  
+The wxO environment name is hardcoded as `GSIBM` in the workflow files.
+
+### Security reports
+
+L3 uploads two JSON artifacts after each run (visible under the workflow run's **Artifacts** section):
+- `bandit-report.json` — SAST findings (HIGH/CRITICAL)
+- `pip-audit-report.json` — dependency CVE findings
+

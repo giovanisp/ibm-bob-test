@@ -1,0 +1,76 @@
+name: L3 · Nightly Regression + Security
+
+on:
+  schedule:
+    - cron: "0 2 * * *"   # 02:00 UTC every night
+  workflow_dispatch:       # manual trigger from GitHub UI
+
+defaults:
+  run:
+    working-directory: my-lab-project
+
+jobs:
+  regression:
+    name: Full regression (tool + agent)
+    runs-on: ubuntu-latest
+
+    env:
+      WXO_API_KEY: ${{ secrets.WXO_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ADK and dependencies
+        run: pip install ibm-watsonx-orchestrate pyyaml
+
+      - name: Activate wxO environment
+        run: orchestrate env activate GSIBM -a "$WXO_API_KEY"
+
+      - name: Run full test suite
+        run: python tests/run_tests.py
+
+  security:
+    name: SAST + SCA
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install security tools and runtime deps
+        run: |
+          pip install ibm-watsonx-orchestrate pyyaml
+          pip install bandit[toml] pip-audit
+
+      - name: Bandit SAST (HIGH+ severity)
+        run: >
+          bandit -r tools/ tests/
+          -f json
+          -o bandit-report.json
+          --severity-level high
+        continue-on-error: false
+
+      - name: pip-audit SCA
+        run: pip-audit --output pip-audit-report.json --format json
+        continue-on-error: false
+
+      - name: Upload Bandit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-report
+          path: my-lab-project/bandit-report.json
+
+      - name: Upload pip-audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pip-audit-report
+          path: my-lab-project/pip-audit-report.json
