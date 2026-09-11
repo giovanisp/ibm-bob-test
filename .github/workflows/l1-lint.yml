@@ -1,8 +1,9 @@
 name: L1 · Lint & Format
 
 on:
-  push:
-    branches: ["**"]
+  # push:            # TEMPORARILY DISABLED
+  #   branches: ["**"]
+  workflow_dispatch: # manual trigger only
 
 jobs:
   lint:
