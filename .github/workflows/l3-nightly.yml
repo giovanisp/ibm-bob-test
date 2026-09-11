@@ -1,8 +1,8 @@
 name: L3 · Nightly Regression + Security
 
 on:
-  schedule:
-    - cron: "0 2 * * *"   # 02:00 UTC every night
+  # schedule:
+  #   - cron: "0 2 * * *"   # 02:00 UTC every night — TEMPORARILY DISABLED
   workflow_dispatch:       # manual trigger from GitHub UI
 
 jobs:
